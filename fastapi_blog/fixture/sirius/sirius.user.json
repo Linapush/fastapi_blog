@@ -1,7 +1,32 @@
 [
   {
-    "id": 1,
-    "username": "test",
+    "username": "user1",
+    "email": "user1@example.com",
+    "hashed_password": "d8578edf8458ce06fbc5bb76a58c5ca4"
+  },
+  {
+    "username": "user2",
+    "email": "user2@example.com",
+    "hashed_password": "d8578edf8458ce06fbc5bb76a58c5ca4"
+  },
+  {
+    "username": "user3",
+    "email": "user3@example.com",
+    "hashed_password": "d8578edf8458ce06fbc5bb76a58c5ca4"
+  },
+  {
+    "username": "user4",
+    "email": "user4@example.com",
+    "hashed_password": "d8578edf8458ce06fbc5bb76a58c5ca4"
+  },
+  {
+    "username": "user5",
+    "email": "user5@example.com",
+    "hashed_password": "d8578edf8458ce06fbc5bb76a58c5ca4"
+  },
+  {
+    "username": "user6",
+    "email": "user6@example.com",
     "hashed_password": "d8578edf8458ce06fbc5bb76a58c5ca4"
   }
 ]

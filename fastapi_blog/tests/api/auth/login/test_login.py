@@ -15,7 +15,13 @@ FIXTURES_PATH = BASE_DIR / 'fixtures'
 
 
 @pytest.mark.parametrize(
-    ('username', 'password', 'expected_status', 'expected_access_token', 'fixtures'),
+    (
+        'username',
+        'password',
+        'expected_status',
+        'expected_access_token',
+        'fixtures',
+    ),
     [
         (
             'invalid_user',
@@ -27,7 +33,7 @@ FIXTURES_PATH = BASE_DIR / 'fixtures'
             ],
         ),
         (
-            'test',
+            'autotest',
             'qwerty',
             status.HTTP_200_OK,
             True,
@@ -48,7 +54,10 @@ async def test_login(
     expected_access_token: Any,
     db_session: None,
 ) -> None:
-    response = await client.post(URLS['auth']['login'], json={'username': username, 'password': password})
+    response = await client.post(
+        URLS['auth']['login'],
+        json={'username': username, 'password': password},
+    )
 
     assert response.status_code == expected_status
 

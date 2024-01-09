@@ -4,8 +4,10 @@
 echo "Start service" # выводит сообщения 
 
 # migrate database
-python scripts/migrate.py # скрипт выполняет миграции базы данных
+# python scripts/migrate.py # скрипт выполняет миграции базы данных
 
+# Выполнение миграций Alembic
+alembic upgrade head
 # load fixtures
 python scripts/load_data.py fixture/sirius/sirius.user.json
 python scripts/load_data.py fixture/sirius/sirius.post.json

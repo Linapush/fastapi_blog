@@ -1,11 +1,11 @@
-# эта чать кода может приодиться 
+# эта чать кода может приодиться
 # для того, чтобы созданные изображения
 # в постах могли ресайзиться
 
 import time
 import uuid
 
-import msgpack
+import msgpack  # type: ignore
 from fastapi import Depends
 from fastapi.responses import ORJSONResponse
 
@@ -13,7 +13,11 @@ from conf.config import settings
 from webapp.api.file.router import file_router
 from webapp.db import kafka
 from webapp.metrics import DEPS_LATENCY
-from webapp.schema.file.resize import ImageResize, ImageResizeResponse, ResizeStatusEnum
+from webapp.schema.file.resize import (
+    ImageResize,
+    ImageResizeResponse,
+    ResizeStatusEnum,
+)
 from webapp.utils.auth.jwt import JwtTokenT, jwt_auth
 
 

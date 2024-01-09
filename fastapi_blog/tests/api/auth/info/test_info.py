@@ -6,7 +6,6 @@ from starlette import status
 
 from tests.const import URLS
 
-
 BASE_DIR = Path(__file__).parent
 FIXTURES_PATH = BASE_DIR / 'fixtures'
 
@@ -15,7 +14,7 @@ FIXTURES_PATH = BASE_DIR / 'fixtures'
     ('username', 'password', 'expected_status', 'fixtures'),
     [
         (
-            'test',
+            'autotest',
             'qwerty',
             status.HTTP_200_OK,
             [
@@ -33,6 +32,9 @@ async def test_login(
     access_token: str,
     expected_status: int,
 ) -> None:
-    response = await client.post(URLS['auth']['info'], headers={'Authorization': f'Bearer {access_token}'})
+    response = await client.post(
+        URLS['auth']['info'],
+        headers={'Authorization': f'Bearer {access_token}'},
+    )
 
     assert response.status_code == expected_status

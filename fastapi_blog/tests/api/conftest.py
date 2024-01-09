@@ -12,10 +12,22 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from tests.const import URLS
 from tests.mocking.kafka import TestKafkaProducer
 from tests.my_types import FixtureFunctionT
-from webapp.db import kafka
 
+from webapp.db import kafka
 from webapp.db.postgres import engine, get_session
 from webapp.models.meta import metadata
+
+
+# Фикстура для имени пользователя
+@pytest.fixture()
+def username():
+    return 'autotest'
+
+
+# Фикстура для пароля пользователя
+@pytest.fixture()
+def password():
+    return 'qwerty'
 
 
 @pytest.fixture()
@@ -41,7 +53,9 @@ async def db_session(app: FastAPI) -> AsyncGenerator[AsyncSession, None]:
 
 
 @pytest.fixture()
-async def _load_fixtures(db_session: AsyncSession, fixtures: List[Path]) -> FixtureFunctionT:
+async def _load_fixtures(
+    db_session: AsyncSession, fixtures: List[Path]
+) -> FixtureFunctionT:
     for fixture in fixtures:
         model = metadata.tables[fixture.stem]
 
@@ -55,8 +69,13 @@ async def _load_fixtures(db_session: AsyncSession, fixtures: List[Path]) -> Fixt
 
 
 @pytest.fixture()
-def _mock_kafka(monkeypatch: pytest.MonkeyPatch, kafka_received_messages: List, mocked_hex: str) -> FixtureFunctionT:
-    monkeypatch.setattr(kafka, 'get_producer', lambda: TestKafkaProducer(kafka_received_messages))
+def _mock_kafka(
+    monkeypatch: pytest.MonkeyPatch,
+    kafka_received_messages: List, mocked_hex: str
+) -> FixtureFunctionT:
+    monkeypatch.setattr(
+        kafka, 'get_producer',
+        lambda: TestKafkaProducer(kafka_received_messages))
     monkeypatch.setattr(kafka, 'get_partition', lambda: 1)
     monkeypatch.setattr(uuid.UUID, 'hex', mocked_hex)
 
@@ -72,7 +91,9 @@ async def access_token(
     username: str,
     password: str,
 ) -> str:
-    response = await client.post(URLS['auth']['login'], json={'username': username, 'password': password})
+    response = await client.post(URLS['auth']['login'],
+                                 json={'username': username,
+                                       'password': password})
     return response.json()['access_token']
 
 
@@ -82,6 +103,7 @@ async def _common_api_fixture(
 ) -> None:
     return
 
+
 @pytest.fixture()
 async def _common_api_with_kafka_fixture(
     _common_api_fixture: FixtureFunctionT,
@@ -90,12 +112,23 @@ async def _common_api_with_kafka_fixture(
     return
 
 
-# Этот код определяет фикстуры для тестирования API. 
+# Этот код определяет фикстуры для тестирования API.
 
-# Сначала импортируются необходимые модули и объекты, такие как FastAPI, AsyncClient, AsyncSession, и т.д.
+# Сначала импортируются необходимые модули и объекты,
+# такие как FastAPI, AsyncClient, AsyncSession, и т.д.
 
-# Затем определяются фикстуры для клиента API (client), сессии базы данных (db_session), загрузки фикстур в базу данных (_load_fixtures), мокирования Kafka (_mock_kafka), списка полученных сообщений Kafka (kafka_received_messages) и токена доступа (access_token).
+# Затем определяются фикстуры для клиента API (client),
+# сессии базы данных (db_session),
+# загрузки фикстур в базу данных (_load_fixtures),
+# мокирования Kafka (_mock_kafka),
+# списка полученных сообщений Kafka (kafka_received_messages)
+# и токена доступа (access_token).
 
-# Каждая фикстура выполняет определенные задачи, такие как подключение к базе данных, создание клиента API, загрузка фикстур в базу данных, мокирование Kafka и т.д.
+# Каждая фикстура выполняет определенные задачи, такие как подключение к базе данных,
+# создание клиента API, загрузка фикстур в базу данных, мокирование Kafka и т.д.
 
-# Наконец, определяются две фикстуры _common_api_fixture и _common_api_with_kafka_fixture, которые используют другие фикстуры для создания общего набора фикстур для тестирования API. Эти фикстуры могут использоваться в других тестах для обеспечения общих условий.
+# Наконец, определяются две фикстуры _common_api_fixture
+# и _common_api_with_kafka_fixture,
+# которые используют другие фикстуры для создания общего
+# набора фикстур для тестирования API.
+# Эти фикстуры могут использоваться в других тестах для обеспечения общих условий.
